@@ -14,6 +14,9 @@ Drop all included files into **_YourInstallDirectory\steamapps\common\StreetFigh
 3. You can plug or unplug your devices while the game is running
 4. Devices are automatically assigned (first plugged, first player assigned, places are kept).
 5. **Added preliminary support for Left and Right Analog Joysticks**
+6. **Pressing SELECT button will quick restart in training mode and/or taunt in versus mode**
+ 
+[Enable "Restart Battle" option in SFV to use] (http://imgur.com/B1LJUdA)
 
 ## Known Bugs
 
