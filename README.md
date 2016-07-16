@@ -13,8 +13,9 @@ Drop all included files into **_YourInstallDirectory\steamapps\common\StreetFigh
 2. By holding the Home Button and left or right on the DPad or Left Analog Stick, you can switch between being player 1 or player 2 on any controller (on XInput controller Start+Back can be used if it's not working).
 3. You can plug or unplug your devices while the game is running
 4. Devices are automatically assigned (first plugged, first player assigned, places are kept).
-5. **Added preliminary support for Left and Right Analog Joysticks**
-6. **Pressing SELECT button will quick restart in training mode and/or taunt in versus mode**
+5. **Modified SELECT button to work as quick restart in training mode and/or taunt in versus mode**
+6. **Added preliminary support for Left and Right Analog Joysticks (+ slight deadzones)**
+7. **Added experimental right analog scaling movement (PS3 TE stick verified / untested with PS4 controller)**
  
 [Enable "Restart Battle" option in SFV to use] (http://imgur.com/B1LJUdA)
 
@@ -26,7 +27,7 @@ Drop all included files into **_YourInstallDirectory\steamapps\common\StreetFigh
 
 1. Controllers that aren't PS3/PS4 controllers don't have a way to get proper mapping :(
 
-## Tested with....
+## Tested with...
 
 1. Hori FC4
 2. Sony DualShock 4
