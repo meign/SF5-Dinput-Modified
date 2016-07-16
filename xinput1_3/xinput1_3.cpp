@@ -451,10 +451,10 @@ int readDirectInputControllerChange(DIJOYSTATE2* input) {
 	// Home is selected (or SELECT + START)
 	BOOL homeSelected = (input->rgbButtons[8] && input->rgbButtons[9]) || input->rgbButtons[12];
 	//If DirectInput HOME + DPAD LEFT (or LS LEFT -meign)
-	if ((input->rgdwPOV[0] == 5 * 4500 || input->rgdwPOV[0] == 6 * 4500 || input->rgdwPOV[0] == 7 * 4500 || input->lX <= 32766) && homeSelected)
+	if ((input->rgdwPOV[0] == 5 * 4500 || input->rgdwPOV[0] == 6 * 4500 || input->rgdwPOV[0] == 7 * 4500 || input->lX <= 31767) && homeSelected)
 		return 0;
 	//If DirectInput HOME + DPAD RIGHT (or LS RIGHT -meign)
-	if ((input->rgdwPOV[0] == 1 * 4500 || input->rgdwPOV[0] == 2 * 4500 || input->rgdwPOV[0] == 3 * 4500 || input->lX >= 32768) && homeSelected)
+	if ((input->rgdwPOV[0] == 1 * 4500 || input->rgdwPOV[0] == 2 * 4500 || input->rgdwPOV[0] == 3 * 4500 || input->lX >= 33767) && homeSelected)
 		return 1;
 	return -1;
 }
@@ -650,23 +650,32 @@ DWORD WINAPI hooked_XInputGetState(DWORD dwUserIndex, XINPUT_STATE *pState)
 	if (js->rgdwPOV[0] == 5 * 4500 || js->rgdwPOV[0] == 6 * 4500 || js->rgdwPOV[0] == 7 * 4500)
 		pState->Gamepad.wButtons |= XINPUT_GAMEPAD_DPAD_LEFT;
 	
-	// Added left and right analog joystick support -meign
-	if (js->lX <= 32766)
+	// Added left and right analog joystick support with slight deadzones -meign
+	if (js->lX <= 31767) //LEFT
 		pState->Gamepad.sThumbLX = -32768;
-	if (js->lX >= 32768)
+	if (js->lX >= 33767) //RIGHT
 		pState->Gamepad.sThumbLX = 32767;
-	if (js->lY <= 32766)
+	if (js->lY <= 31767) //UP
 		pState->Gamepad.sThumbLY = 32767;
-	if (js->lY >= 32768)
+	if (js->lY >= 33767) //DOWN
 		pState->Gamepad.sThumbLY = -32768;
-	if (js->lZ == 0)
-		pState->Gamepad.sThumbRX = -32768;
-	if (js->lZ == 65535)
-		pState->Gamepad.sThumbRX = 32767;
-	if (js->lRz == 0)
-		pState->Gamepad.sThumbRY = 32767;
-	if (js->lRz == 65535)
-		pState->Gamepad.sThumbRY = -32768;
+	// Experimental right analog scaling movement (CFN map), works with PS3 TE stick in RS mode, unverified with PS4 controller -meign
+		if (js->lZ <= 31767) {//LEFT
+		int d2x = js->lZ;
+		pState->Gamepad.sThumbRX = -32768 + d2x;
+	}
+	if (js->lZ >= 33767) {//RIGHT
+		int d2x = js->lZ;
+		pState->Gamepad.sThumbRX = (d2x - 32767) - 1;
+	}
+	if (js->lRz <= 31767) {//UP
+		int d2x = js->lRz;
+		pState->Gamepad.sThumbRY = 32767 - d2x;
+	}
+	if (js->lRz >= 33767) {//DOWN
+		int d2x = js->lRz;
+		pState->Gamepad.sThumbRY = (32768 - d2x) - 1;
+	}
 
 	// As seen on x360ce
 	// prevent sleep
