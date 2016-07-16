@@ -17,7 +17,8 @@ Drop all included files into **_YourInstallDirectory\steamapps\common\StreetFigh
 6. **Added preliminary support for Left and Right Analog Joysticks (+ slight deadzones)**
 7. **Added experimental right analog scaling movement (PS3 TE stick verified / untested with PS4 controller)**
  
-[Enable "Restart Battle" option in SFV to use] (http://imgur.com/B1LJUdA)
+[Enable "Restart Battle" option in SFV to use SELECT button for quick restart](http://i.imgur.com/B1LJUdA)
+![Enable "Restart Battle" option in SFV](http://i.imgur.com/B1LJUdA.png)
 
 ## Known Bugs
 
