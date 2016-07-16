@@ -660,7 +660,7 @@ DWORD WINAPI hooked_XInputGetState(DWORD dwUserIndex, XINPUT_STATE *pState)
 	if (js->lY >= 33767) //DOWN
 		pState->Gamepad.sThumbLY = -32768;
 	// Experimental right analog scaling movement (CFN map), works with PS3 TE stick in RS mode, unverified with PS4 controller -meign
-		if (js->lZ <= 31767) {//LEFT
+	if (js->lZ <= 31767) {//LEFT
 		int d2x = js->lZ;
 		pState->Gamepad.sThumbRX = -32768 + d2x;
 	}
