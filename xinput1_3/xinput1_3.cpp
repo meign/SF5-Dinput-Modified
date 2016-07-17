@@ -615,66 +615,67 @@ DWORD WINAPI hooked_XInputGetState(DWORD dwUserIndex, XINPUT_STATE *pState)
 	pState->dwPacketNumber = GetTickCount();
 
 	// If the DirectInput Controller is bound to this slot, inject button inputs
-	if (js->rgbButtons[0])
+	if (js->rgbButtons[0]) // SQUARE
 		pState->Gamepad.wButtons |= XINPUT_GAMEPAD_X;
-	if (js->rgbButtons[3])
+	if (js->rgbButtons[3]) // TRIANGLE
 		pState->Gamepad.wButtons |= XINPUT_GAMEPAD_Y;
-	if (js->rgbButtons[1])
+	if (js->rgbButtons[1]) // X
 		pState->Gamepad.wButtons |= XINPUT_GAMEPAD_A;
-	if (js->rgbButtons[2])
+	if (js->rgbButtons[2]) // CIRCLE
 		pState->Gamepad.wButtons |= XINPUT_GAMEPAD_B;
-	if (js->rgbButtons[5])
+	if (js->rgbButtons[5]) // R1
 		pState->Gamepad.wButtons |= XINPUT_GAMEPAD_RIGHT_SHOULDER;
-	if (js->rgbButtons[7])
+	if (js->rgbButtons[7]) // R2
 		pState->Gamepad.bRightTrigger = 255;
-	if (js->rgbButtons[4])
+	if (js->rgbButtons[4]) // L1
 		pState->Gamepad.wButtons |= XINPUT_GAMEPAD_LEFT_SHOULDER;
-	if (js->rgbButtons[6])
+	if (js->rgbButtons[6]) // L2
 		pState->Gamepad.bLeftTrigger = 255;
 	// Modified SELECT to also function as RESTART in training room and/or TAUNT in versus -meign
-	if (js->rgbButtons[8])
+	if (js->rgbButtons[8]) // SELECT
 		//pState->Gamepad.wButtons |= XINPUT_GAMEPAD_BACK;
 		(pState->Gamepad.bRightTrigger = 255) |= pState->Gamepad.wButtons |= XINPUT_GAMEPAD_X | XINPUT_GAMEPAD_Y | XINPUT_GAMEPAD_A | XINPUT_GAMEPAD_B | XINPUT_GAMEPAD_RIGHT_SHOULDER | XINPUT_GAMEPAD_LEFT_THUMB | XINPUT_GAMEPAD_BACK;
-	if (js->rgbButtons[9])
+	if (js->rgbButtons[9]) // START
 		pState->Gamepad.wButtons |= XINPUT_GAMEPAD_START;
-	if (js->rgbButtons[10])
+	if (js->rgbButtons[10]) // LS
 		pState->Gamepad.wButtons |= XINPUT_GAMEPAD_LEFT_THUMB;
-	if (js->rgbButtons[11])
+	if (js->rgbButtons[11]) // RS
 		pState->Gamepad.wButtons |= XINPUT_GAMEPAD_RIGHT_THUMB;
-	if (js->rgdwPOV[0] == 0 * 4500 || js->rgdwPOV[0] == 1 * 4500 || js->rgdwPOV[0] == 7 * 4500)
+	if (js->rgdwPOV[0] == 0 * 4500 || js->rgdwPOV[0] == 1 * 4500 || js->rgdwPOV[0] == 7 * 4500) // DPAD UP
 		pState->Gamepad.wButtons |= XINPUT_GAMEPAD_DPAD_UP;
-	if (js->rgdwPOV[0] == 1 * 4500 || js->rgdwPOV[0] == 2 * 4500 || js->rgdwPOV[0] == 3 * 4500)
+	if (js->rgdwPOV[0] == 1 * 4500 || js->rgdwPOV[0] == 2 * 4500 || js->rgdwPOV[0] == 3 * 4500) // DPAD RIGHT
 		pState->Gamepad.wButtons |= XINPUT_GAMEPAD_DPAD_RIGHT;
-	if (js->rgdwPOV[0] == 3 * 4500 || js->rgdwPOV[0] == 4 * 4500 || js->rgdwPOV[0] == 5 * 4500)
+	if (js->rgdwPOV[0] == 3 * 4500 || js->rgdwPOV[0] == 4 * 4500 || js->rgdwPOV[0] == 5 * 4500) // DPAD DOWN
 		pState->Gamepad.wButtons |= XINPUT_GAMEPAD_DPAD_DOWN;
-	if (js->rgdwPOV[0] == 5 * 4500 || js->rgdwPOV[0] == 6 * 4500 || js->rgdwPOV[0] == 7 * 4500)
+	if (js->rgdwPOV[0] == 5 * 4500 || js->rgdwPOV[0] == 6 * 4500 || js->rgdwPOV[0] == 7 * 4500) // DPAD LEFT
 		pState->Gamepad.wButtons |= XINPUT_GAMEPAD_DPAD_LEFT;
 	
 	// Added left and right analog joystick support with slight deadzones -meign
-	if (js->lX <= 31767) //LEFT
+	if (js->lX <= 31767) // LS LEFT
 		pState->Gamepad.sThumbLX = -32768;
-	if (js->lX >= 33767) //RIGHT
+	if (js->lX >= 33767) // LS RIGHT
 		pState->Gamepad.sThumbLX = 32767;
-	if (js->lY <= 31767) //UP
+	if (js->lY <= 31767) // LS UP
 		pState->Gamepad.sThumbLY = 32767;
-	if (js->lY >= 33767) //DOWN
+	if (js->lY >= 33767) // LS DOWN
 		pState->Gamepad.sThumbLY = -32768;
+	
 	// Experimental right analog scaling movement (CFN map), works with PS3 TE stick in RS mode, unverified with PS4 controller -meign
-	if (js->lZ <= 31767) {//LEFT
+	if (js->lZ <= 31767) {// RS LEFT
 		int d2x = js->lZ;
 		pState->Gamepad.sThumbRX = -32768 + d2x;
 	}
-	if (js->lZ >= 33767) {//RIGHT
+	if (js->lZ >= 33767) {// RS RIGHT
 		int d2x = js->lZ;
-		pState->Gamepad.sThumbRX = (d2x - 32767) - 1;
+		pState->Gamepad.sThumbRX = d2x - 32768;
 	}
-	if (js->lRz <= 31767) {//UP
+	if (js->lRz <= 31767) {// RS UP
 		int d2x = js->lRz;
 		pState->Gamepad.sThumbRY = 32767 - d2x;
 	}
-	if (js->lRz >= 33767) {//DOWN
+	if (js->lRz >= 33767) {// RS DOWN
 		int d2x = js->lRz;
-		pState->Gamepad.sThumbRY = (32768 - d2x) - 1;
+		pState->Gamepad.sThumbRY = 32767 - d2x;
 	}
 
 	// As seen on x360ce
